@@ -57,3 +57,68 @@ from
 from Staff
 group by branchNo) As BranchCounts --Row Query
 )
+
+--Get staff
+SELECT personno, fName, LName
+from Person
+
+where personno in
+(select staffno
+from Staff)
+
+--List the firstname, lastname of all employees who manage properties
+select *
+from Property
+
+select *
+from Staff
+
+select fName, lName
+from Person
+where PersonNo in
+(select distinct staffNo
+from Property
+)
+
+--Intersect:
+select personno
+from Person
+intersect
+select distinct staffno
+from Property
+
+--Inner join:
+select distinct personno, fname, lName
+from Person
+inner join 
+Property
+on personno = staffno
+
+--Ppl who do not manage properties
+select fName, lName
+from Person
+where PersonNo not in
+(select distinct staffNo
+from Property
+)
+
+--Using outer join
+select personno, fname, lName
+from Person
+left outer join --left means take everthing from the table on the left (person) regardless
+--of if it's in the table on the right
+Property
+on personno = staffno
+where  PropertyNo is null
+
+--Who did not rent a property
+select ClientNo
+from Client 
+where ClientNo in 
+(
+select ClientNo
+from lease
+)
+
+select * from Client
+select * from Property
